@@ -1,3 +1,4 @@
+/*
 The MIT License (MIT)
 
 Copyright (c) 2016 Yanjiong Wang
@@ -19,3 +20,33 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+ */
+package wang.yanjiong.toid;
+
+/**
+ * Created by WangYanJiong on 7/22/16.
+ */
+
+
+public class Toid64 {
+
+    public static final int LEN_R = 1;
+
+    public static final int LEN_DATE_YY = 7;
+
+    public static final int LEN_DATE_MM = 4;
+
+    public static final int LEN_DATE_DD = 5;
+
+    public static final int LEN_TIME_HH = 5;
+
+    public static final int LEN_TIME_MM = 6;
+
+    public static final int LEN_TIME_SS = 6;
+
+    public static final int[] LEN_TYPE_SYS = {5, 6, 7, 7, 10, 11, 12, 13};
+
+    public static final int[] LEN_TYPE_INS = {11, 10, 9, 10, 7, 6, 6, 5};
+
+    public static final int[] LEN_TYPE_TPS = {11, 11, 11, 10, 10, 10, 9, 9};
+}
