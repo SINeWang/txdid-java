@@ -28,7 +28,7 @@ package wang.yanjiong.toid;
  */
 
 
-public class Toid64 {
+public class Tid64Generator {
 
     public static final int LEN_R = 1;
 
@@ -49,4 +49,29 @@ public class Toid64 {
     public static final int[] LEN_TYPE_INS = {11, 10, 9, 10, 7, 6, 6, 5};
 
     public static final int[] LEN_TYPE_TPS = {11, 11, 11, 10, 10, 10, 9, 9};
+
+    private Integer type;
+
+    private Integer system;
+
+    private Integer instance;
+
+    private Integer tps;
+
+    private long time;
+
+    private Tid64Generator(int type, int system, int instance) {
+        this.type = type;
+        this.system = system;
+        this.instance = instance;
+    }
+
+    public static Tid64Generator newInstance(int type, int system, int instance) {
+        Tid64Generator tid64 = new Tid64Generator(type, system, instance);
+        return tid64;
+    }
+
+    public long nextId() {
+        return time = System.currentTimeMillis();
+    }
 }
