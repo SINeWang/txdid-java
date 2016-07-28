@@ -11,10 +11,13 @@ public class Tid64Test {
     @Test
     public void TestGenerator() {
         Tid64Generator tid = Tid64Generator.newInstance(Tid64Type.T8, 12, 12);
+        tid.nextId();
+
+        long now = System.currentTimeMillis();
         for (int i = 0; i < 200; i++) {
             long id = tid.nextId();
-            System.out.println(Long.toHexString(id) + "," + tid.toLogString(id));
         }
+        System.out.println(System.currentTimeMillis() - now);
     }
 
 }
