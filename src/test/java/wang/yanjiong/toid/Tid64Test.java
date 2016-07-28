@@ -10,10 +10,10 @@ public class Tid64Test {
 
     @Test
     public void TestGenerator() {
-        Tid64Generator tid = Tid64Generator.newInstance(Tid64Type.T1, 12, 12);
-        tid.nextId();
-
-        System.out.println(tid.nextId());
+        Tid64Generator tid = Tid64Generator.newInstance(Tid64Type.T2, 12, 12);
+        for (int i = 0; i < 100; i++) {
+            System.out.println(Long.toHexString(tid.nextId()));
+        }
     }
 
 }
