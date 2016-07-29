@@ -40,7 +40,7 @@ public class Tid64Generator {
 
     public static final int LEN_TYPE = 3;
 
-    public static final int LEN_DATE_YY = 7;
+    public static final int LEN_DATE_YY = 6;
 
     public static final int LEN_DATE_MM = 4;
 
@@ -56,47 +56,53 @@ public class Tid64Generator {
 
     private static final int LEN_TIME = LEN_TIME_HH + LEN_TIME_MM + LEN_TIME_SS;
 
-    private static final int LEN_TSIT = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_TO;
+    private static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_TO - LEN_TYPE;
 
-    public static final int[] LEN_TYPE_SYS = {5, 6, 7, 7, 10, 11, 12, 13};
+    public static final int[] LEN_TYPE_SYS = {5, 6, 7, 7, 10, 10, 11, 12};
 
-    public static final int[] LEN_TYPE_INS = {11, 10, 9, 10, 7, 6, 6, 5};
+    public static final int[] LEN_TYPE_INS = {12, 11, 10, 10, 8, 8, 7, 7};
 
-    public static final int[] LEN_TYPE_TPS = {11, 11, 11, 10, 10, 10, 9, 9};
+    public static final int[] LEN_TYPE_SER = {11, 11, 11, 11, 10, 10, 10, 9};
 
-    private long tsi;
+    public static final int LEN_TTSIS = LEN_TO + LEN_TYPE + LEN_SIS;
+
+    private static final long MASK_SECOND = (1 << LEN_TIME_SS) - 1;
+    private static final long MASK_MINUTE = (1 << LEN_TIME_MM) - 1;
+    private static final long MASK_HOUR = (1 << LEN_TIME_HH) - 1;
+    private static final long MASK_DATE = (1 << LEN_DATE_DD) - 1;
+    private static final long MASK_MONTH = (1 << LEN_DATE_MM) - 1;
+    private static final long MASK_YEAR = (1 << LEN_DATE_YY) - 1;
+
+
+    private long type;
+
+    private long si;
 
     private long timestamp;
 
-    private long rdt;
+    private long dttt;
 
-    private AtomicInteger tps;
+    private AtomicInteger serial;
 
-    private Tid64Generator(int type, int system, int instance) {
+
+    public Tid64Generator(int type, int system, int instance) {
         this.timestamp = 0;
-        long lengthOfT = LEN_TYPE_TPS[type];
+        this.type = type;
+        long lengthOfT = LEN_TYPE_SER[type];
         long lengthOfIT = LEN_TYPE_INS[type] + lengthOfT;
-        long lengthOfSIT = LEN_TYPE_SYS[type] + lengthOfIT;
-        this.tsi |= type << lengthOfSIT;
-        this.tsi |= system << lengthOfIT;
-        this.tsi |= instance << lengthOfT;
+        this.si |= system << lengthOfIT;
+        this.si |= instance << lengthOfT;
 
     }
 
-    public static Tid64Generator newInstance(int type, int system, int instance) {
-        Tid64Generator tid64 = new Tid64Generator(type, system, instance);
-        return tid64;
-
-
+    public Tid64 next() {
+        refresh();
+        long id = dttt | si | serial.incrementAndGet();
+        return new Tid64(id);
     }
 
-    public long nextId() {
+    private synchronized void refresh() {
         long now = System.currentTimeMillis();
-        long nowRDT = buildRDT(now);
-        return nowRDT | tsi | tps.incrementAndGet();
-    }
-
-    private synchronized long buildRDT(long now) {
 
         if (now - timestamp > 1000) {
 
@@ -111,13 +117,14 @@ public class Tid64Generator {
 
             long tidYear = year - 2000;
 
-            rdt = (tidYear << (LEN_DATE_MM + LEN_DATE_DD));
 
-            rdt |= (month << LEN_DATE_DD);
+            dttt |= (tidYear << (LEN_DATE_MM + LEN_DATE_DD));
 
-            rdt |= date;
+            dttt |= (month << LEN_DATE_DD);
 
-            rdt <<= LEN_TIME;
+            dttt |= date;
+
+            dttt <<= LEN_TIME;
 
             long hms = hour << LEN_TIME_MM + LEN_TIME_SS;
 
@@ -125,50 +132,46 @@ public class Tid64Generator {
 
             hms |= second;
 
-            rdt |= hms;
+            dttt |= hms;
 
-            rdt <<= LEN_TSIT;
+            dttt <<= LEN_TO;
+
+            dttt <<= LEN_TYPE;
+
+            dttt |= type;
+
+            dttt <<= LEN_SIS;
             timestamp = now;
-            tps = new AtomicInteger();
+            serial = new AtomicInteger();
         }
-
-        return rdt;
     }
 
 
-    public static String toLogString(final long id) {
-        final int type = (short) ((id >> (LEN_TSIT - LEN_TYPE)) & (0x7));
+    static short[] id2Array(final long id) {
+        final short type = (short) ((0x7) & (id >> LEN_SIS));
 
-        final int l_t = LEN_TYPE_TPS[type];
-        final int l_it = LEN_TYPE_INS[type] + l_t;
+        final int l_ser = LEN_TYPE_SER[type];
+        final int l_sisser = LEN_TYPE_INS[type] + l_ser;
 
-        final long MASK_TPS = (1 << LEN_TYPE_TPS[type]) - 1;
-        final long MASK_INSTANCE = (1 << LEN_TYPE_INS[type]) - 1;
         final long MASK_SYSTEM = (1 << LEN_TYPE_SYS[type]) - 1;
-        final long MASK_SECOND = (1 << LEN_TIME_SS) - 1;
-        final long MASK_MINUTE = (1 << LEN_TIME_MM) - 1;
-        final long MASK_HOUR = (1 << LEN_TIME_HH) - 1;
-        final long MASK_DATE = (1 << LEN_DATE_DD) - 1;
-        final long MASK_MONTH = (1 << LEN_DATE_MM) - 1;
-        final long MASK_YEAR = (1 << LEN_DATE_YY) - 1;
+        final long MASK_INSTANCE = (1 << LEN_TYPE_INS[type]) - 1;
+        final long MASK_SER = (1 << LEN_TYPE_SER[type]) - 1;
 
-        final short tps = (short) (id & MASK_TPS);
-        final short instance = (short) ((id >> l_t) & MASK_INSTANCE);
-        final short system = (short) ((id >> l_it) & MASK_SYSTEM);
 
-        final short second = (short) ((id >> LEN_TSIT) & MASK_SECOND);
-        final short minute = (short) ((id >> (LEN_TSIT + LEN_TIME_SS)) & MASK_MINUTE);
-        final short hour = (short) ((id >> (LEN_TSIT + LEN_TIME_MM + LEN_TIME_SS)) & MASK_HOUR);
-        final short date = (short) ((id >> (LEN_TSIT + LEN_TIME)) & MASK_DATE);
-        final short month = (short) ((id >> (LEN_TSIT + LEN_TIME + LEN_DATE_DD)) & MASK_MONTH);
-        final short tidYear = (short) ((id >> (LEN_TSIT + LEN_TIME + LEN_DATE_DD + LEN_DATE_MM)) & MASK_YEAR);
+        final short serial = (short) (id & MASK_SER);
+        final short instance = (short) ((id >> l_ser) & MASK_INSTANCE);
+        final short system = (short) ((id >> l_sisser) & MASK_SYSTEM);
 
-        if ((id >> (LEN_TOTAL - 1)) == 0) {
-            return "T." + tidYear + padding(month) + padding(date) + padding(hour) + padding(minute) + padding(second) + "." + type + "." + system + "." + instance + "." + tps;
-        } else {
-            new IllegalArgumentException("Invalid TID start with 0x1, {" + Long.toHexString(id) + "}");
-        }
-        return "";
+        final short second = (short) ((id >> LEN_TTSIS) & MASK_SECOND);
+        final short minute = (short) ((id >> (LEN_TIME_SS + LEN_TTSIS)) & MASK_MINUTE);
+        final short hour = (short) ((id >> (LEN_TIME_MM + LEN_TIME_SS + LEN_TTSIS)) & MASK_HOUR);
+        final short date = (short) ((id >> (LEN_TIME + LEN_TTSIS)) & MASK_DATE);
+        final short month = (short) ((id >> (LEN_DATE_DD + LEN_TIME + LEN_TTSIS)) & MASK_MONTH);
+        final short year = (short) ((id >> (LEN_DATE_MM + LEN_DATE_DD + LEN_TIME + LEN_TTSIS)) & MASK_YEAR);
+        final short to = (short) ((0x1) & id >> (LEN_SIS + LEN_TYPE));
+
+        return new short[]{to, type, year, month, date, hour, minute, second, system, instance, serial};
+
     }
 
     private static String[] PADS = {
@@ -184,12 +187,11 @@ public class Tid64Generator {
             "90", "91", "92", "93", "94", "95", "96", "97", "98", "99"
     };
 
-    private static String padding(short number) {
+    static String padding(short number) {
         return PADS[number];
     }
 
-    public static String parseToHexString(String id) {
-        // TODO
-        return null;
+    public static long fromString(String id) {
+        return Long.valueOf(id, 16);
     }
 }
