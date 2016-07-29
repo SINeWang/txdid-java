@@ -3,22 +3,21 @@ package wang.yanjiong.toid;
 /**
  * Created by WangYanJiong on 7/26/16.
  */
-public class Tid64Type {
+public enum Tid64Type {
 
-    public static final int T1 = 0;
+    I4096S2048,
 
-    public static final int T2 = 1;
+    I2048S2048,
 
-    public static final int T3 = 2;
+    I1024S2048,
 
-    public static final int T4 = 3;
+    I512S2048,
 
-    public static final int T5 = 4;
+    I512S1024,
 
-    public static final int T6 = 5;
+    I256S1024,
 
-    public static final int T7 = 6;
+    I128S1024,
 
-    public static final int T8 = 7;
-
+    I128S512
 }

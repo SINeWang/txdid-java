@@ -36,21 +36,21 @@ public class Tid64Generator {
 
     public static final int LEN_TOTAL = 64;
 
-    public static final int LEN_TO = 1;
+    private static final int LEN_TO = 1;
 
-    public static final int LEN_TYPE = 3;
+    private static final int LEN_TYPE = 3;
 
-    public static final int LEN_DATE_YY = 6;
+    private static final int LEN_DATE_YY = 6;
 
-    public static final int LEN_DATE_MM = 4;
+    private static final int LEN_DATE_MM = 4;
 
-    public static final int LEN_DATE_DD = 5;
+    private static final int LEN_DATE_DD = 5;
 
-    public static final int LEN_TIME_HH = 5;
+    private static final int LEN_TIME_HH = 5;
 
-    public static final int LEN_TIME_MM = 6;
+    private static final int LEN_TIME_MM = 6;
 
-    public static final int LEN_TIME_SS = 6;
+    private static final int LEN_TIME_SS = 6;
 
     private static final int LEN_DATE = LEN_DATE_YY + LEN_DATE_MM + LEN_DATE_DD;
 
@@ -58,13 +58,13 @@ public class Tid64Generator {
 
     private static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_TO - LEN_TYPE;
 
-    public static final int[] LEN_TYPE_SYS = {5, 6, 7, 7, 10, 10, 11, 12};
+    private static final int[] LEN_TYPE_SYS = {5, 6, 7, 8, 9, 10, 11, 12};
 
-    public static final int[] LEN_TYPE_INS = {12, 11, 10, 10, 8, 8, 7, 7};
+    private static final int[] LEN_TYPE_INS = {12, 11, 10, 9, 9, 8, 7, 7};
 
-    public static final int[] LEN_TYPE_SER = {11, 11, 11, 11, 10, 10, 10, 9};
+    private static final int[] LEN_TYPE_SER = {11, 11, 11, 11, 10, 10, 10, 9};
 
-    public static final int LEN_TTSIS = LEN_TO + LEN_TYPE + LEN_SIS;
+    private static final int LEN_TTSIS = LEN_TO + LEN_TYPE + LEN_SIS;
 
     private static final long MASK_SECOND = (1 << LEN_TIME_SS) - 1;
     private static final long MASK_MINUTE = (1 << LEN_TIME_MM) - 1;
@@ -85,65 +85,63 @@ public class Tid64Generator {
     private AtomicInteger serial;
 
 
-    public Tid64Generator(int type, int system, int instance) {
+    public Tid64Generator(Tid64Type type, int system, int instance) {
         this.timestamp = 0;
-        this.type = type;
-        long lengthOfT = LEN_TYPE_SER[type];
-        long lengthOfIT = LEN_TYPE_INS[type] + lengthOfT;
+        this.type = type.ordinal();
+        long lengthOfT = LEN_TYPE_SER[type.ordinal()];
+        long lengthOfIT = LEN_TYPE_INS[type.ordinal()] + lengthOfT;
         this.si |= system << lengthOfIT;
         this.si |= instance << lengthOfT;
 
     }
 
     public Tid64 next() {
-        refresh();
+        long now = System.currentTimeMillis();
+        if (now - timestamp > 1000) {
+            refresh(now);
+        }
         long id = dttt | si | serial.incrementAndGet();
         return new Tid64(id);
     }
 
-    private synchronized void refresh() {
-        long now = System.currentTimeMillis();
+    private synchronized void refresh(long now) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(now));
+        long year = calendar.get(Calendar.YEAR);
+        long month = calendar.get(Calendar.MONTH) + 1; // base 0
+        long date = calendar.get(Calendar.DATE); // base 1
+        long hour = calendar.get(Calendar.HOUR_OF_DAY);
+        long minute = calendar.get(Calendar.MINUTE);
+        long second = calendar.get(Calendar.SECOND);
 
-        if (now - timestamp > 1000) {
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date(now));
-            long year = calendar.get(Calendar.YEAR);
-            long month = calendar.get(Calendar.MONTH) + 1; // base 0
-            long date = calendar.get(Calendar.DATE); // base 1
-            long hour = calendar.get(Calendar.HOUR_OF_DAY);
-            long minute = calendar.get(Calendar.MINUTE);
-            long second = calendar.get(Calendar.SECOND);
-
-            long tidYear = year - 2000;
+        long tidYear = year - 2000;
 
 
-            dttt |= (tidYear << (LEN_DATE_MM + LEN_DATE_DD));
+        dttt |= (tidYear << (LEN_DATE_MM + LEN_DATE_DD));
 
-            dttt |= (month << LEN_DATE_DD);
+        dttt |= (month << LEN_DATE_DD);
 
-            dttt |= date;
+        dttt |= date;
 
-            dttt <<= LEN_TIME;
+        dttt <<= LEN_TIME;
 
-            long hms = hour << LEN_TIME_MM + LEN_TIME_SS;
+        long hms = hour << LEN_TIME_MM + LEN_TIME_SS;
 
-            hms |= minute << LEN_TIME_SS;
+        hms |= minute << LEN_TIME_SS;
 
-            hms |= second;
+        hms |= second;
 
-            dttt |= hms;
+        dttt |= hms;
 
-            dttt <<= LEN_TO;
+        dttt <<= LEN_TO;
 
-            dttt <<= LEN_TYPE;
+        dttt <<= LEN_TYPE;
 
-            dttt |= type;
+        dttt |= type;
 
-            dttt <<= LEN_SIS;
-            timestamp = now;
-            serial = new AtomicInteger();
-        }
+        dttt <<= LEN_SIS;
+        timestamp = now;
+        serial = new AtomicInteger();
     }
 
 
