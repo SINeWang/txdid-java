@@ -1,4 +1,4 @@
-package wang.yanjiong.toid;
+package wang.yanjiong.toid.tid64;
 
 /**
  * Created by WangYanJiong on 7/26/16.

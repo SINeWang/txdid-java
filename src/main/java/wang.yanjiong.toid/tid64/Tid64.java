@@ -1,7 +1,4 @@
-package wang.yanjiong.toid;
-
-import static wang.yanjiong.toid.Tid64Generator.padding;
-import static wang.yanjiong.toid.Tid64Generator.id2Array;
+package wang.yanjiong.toid.tid64;
 
 /**
  * Created by WangYanJiong on 7/29/16.
@@ -66,9 +63,9 @@ public class Tid64 {
         if (array != null) {
             return;
         }
-        array = id2Array(id);
-        stringValue = "T" + getType() + DELIMITER + getYear() + padding(getMonth()) + padding(getDate())
-                + "." + padding(getHour()) + padding(getMinute()) + padding(getSecond()) +
+        array = Tid64Generator.id2Array(id);
+        stringValue = "T" + getType() + DELIMITER + getYear() + Tid64Generator.padding(getMonth()) + Tid64Generator.padding(getDate())
+                + "." + Tid64Generator.padding(getHour()) + Tid64Generator.padding(getMinute()) + Tid64Generator.padding(getSecond()) +
                 DELIMITER + getSystem() + "." + getInstance() + "." + getSerial();
     }
 

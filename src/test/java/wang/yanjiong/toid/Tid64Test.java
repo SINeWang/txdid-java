@@ -1,8 +1,10 @@
 package wang.yanjiong.toid;
 
 import org.junit.Test;
+import wang.yanjiong.toid.tid64.Tid64;
+import wang.yanjiong.toid.tid64.Tid64Generator;
 
-import static wang.yanjiong.toid.Tid64Type.*;
+import static wang.yanjiong.toid.tid64.Tid64Type.*;
 
 /**
  * Created by WangYanJiong on 7/26/16.
