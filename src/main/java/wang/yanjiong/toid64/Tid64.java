@@ -23,6 +23,9 @@ SOFTWARE.
  */
 package wang.yanjiong.toid64;
 
+import static wang.yanjiong.toid64.Tid64Parser.id2Array;
+import static wang.yanjiong.toid64.Toid64Parser.padding;
+
 /**
  * Created by WangYanJiong on 7/29/16.
  */
@@ -106,9 +109,9 @@ public class Tid64 {
         if (array != null) {
             return;
         }
-        array = Tid64Generator.id2Array(id);
-        stringValue = "T" + getType() + DELIMITER + getYear() + Tid64Generator.padding(getMonth()) + Tid64Generator.padding(getDate())
-                + "." + Tid64Generator.padding(getHour()) + Tid64Generator.padding(getMinute()) + Tid64Generator.padding(getSecond()) +
+        array = id2Array(id);
+        stringValue = "T" + getType() + DELIMITER + getYear() + padding(getMonth()) + padding(getDate())
+                + "." + padding(getHour()) + padding(getMinute()) + padding(getSecond()) +
                 DELIMITER + getSystem() + "." + getInstance() + "." + getSerial();
     }
 
