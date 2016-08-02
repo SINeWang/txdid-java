@@ -76,7 +76,7 @@ public class Tid64Generator extends Abstract64Generator {
             refresh(now);
         }
         long seq = serial.incrementAndGet();
-        if (seq >= (1 << LEN_TYPE_SER[(int) type])) {
+        if (seq >= (2 << LEN_TYPE_SER[(int) type])) {
             waiting();
             refresh(System.currentTimeMillis());
         }
