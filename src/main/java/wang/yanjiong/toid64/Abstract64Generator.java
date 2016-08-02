@@ -73,4 +73,16 @@ public abstract class Abstract64Generator {
         return Long.valueOf(id, 16);
     }
 
+
+    long timestamp;
+
+    synchronized void waiting() {
+        while (System.currentTimeMillis() - timestamp < 1000) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+
 }

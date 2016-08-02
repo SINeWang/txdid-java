@@ -36,8 +36,6 @@ public class Oid64Generator extends Abstract64Generator {
 
     static final int LEN_SEQ = 19;
 
-    private long timestamp;
-
     private long tdt;
 
     private AtomicInteger serial;
@@ -95,15 +93,5 @@ public class Oid64Generator extends Abstract64Generator {
 
         tdt <<= (LEN_INS + LEN_SEQ);
     }
-
-    private synchronized void waiting() {
-        while (System.currentTimeMillis() - timestamp < 1000) {
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-
 
 }
