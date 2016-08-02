@@ -25,7 +25,7 @@ package wang.yanjiong.toid64;
 
 import org.junit.Test;
 
-import static wang.yanjiong.toid64.Tid64Type.*;
+import static wang.yanjiong.toid64.Tid64.Tid64Type.*;
 
 /**
  * Created by WangYanJiong on 7/26/16.

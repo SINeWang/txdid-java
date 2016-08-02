@@ -23,6 +23,8 @@ SOFTWARE.
  */
 package wang.yanjiong.toid64;
 
+import wang.yanjiong.toid64.Tid64.Tid64Type;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
