@@ -21,26 +21,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid;
+package wang.yanjiong.toid64;
 
 /**
- * Created by WangYanJiong on 7/26/16.
+ * Created by WangYanJiong on 8/1/16.
  */
-public enum Tid64Type {
+public class Oid64 {
 
-    I4096S2048,
+    private String stringValue;
 
-    I2048S2048,
+    public static final int FIELD_TO = 1;
 
-    I1024S2048,
+    private long id;
 
-    I512S2048,
+    public Oid64(long id) {
+        this.id = id;
+    }
 
-    I512S1024,
+    public long value() {
+        return id;
+    }
 
-    I256S1024,
+    public String toString() {
+        return Long.toHexString(id);
+    }
 
-    I128S1024,
-
-    I128S512
 }

@@ -21,29 +21,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid;
+package wang.yanjiong.toid64;
+
+import org.junit.Test;
+
+import static wang.yanjiong.toid64.Tid64Type.*;
 
 /**
- * Created by WangYanJiong on 8/1/16.
+ * Created by WangYanJiong on 7/26/16.
  */
-public class Oid64 {
 
-    private String stringValue;
+public class Tid64Test {
 
-    public static final int FIELD_TO = 1;
+    @Test
+    public void TestGenerator() {
+        Tid64Generator generator = new Tid64Generator(I128S512, 12, 12);
+        Tid64 tid64 = generator.next();
 
-    private long id;
+        String[] s = tid64.toString().split("-");
 
-    public Oid64(long id) {
-        this.id = id;
-    }
 
-    public long value() {
-        return id;
-    }
+        long now = System.currentTimeMillis();
+        for (int i = 0; i < 200; i++) {
+            Tid64 id = generator.next();
+            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + Tid64Generator.fromHexString(id.toString()));
+        }
+        System.out.println(System.currentTimeMillis() - now);
 
-    public String toString() {
-        return Long.toHexString(id);
     }
 
 }
