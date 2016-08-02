@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package wang.yanjiong.toid;
 
+import java.awt.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -59,7 +60,12 @@ public class Oid64Generator extends Abstract64Generator {
         if (now - timestamp > 1000) {
             refresh(now);
         }
-        long id = tdt | instance | serial.incrementAndGet();
+        long seq = serial.incrementAndGet();
+        if (seq > 0x7FFFF) {
+            waiting();
+            refresh(System.currentTimeMillis());
+        }
+        long id = tdt | instance | seq;
         return new Oid64(id);
     }
 
@@ -73,10 +79,11 @@ public class Oid64Generator extends Abstract64Generator {
         long minute = calendar.get(Calendar.MINUTE);
         long second = calendar.get(Calendar.SECOND);
 
-        timestamp = now;
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        timestamp = calendar.getTimeInMillis();
         serial = new AtomicInteger();
 
-        tdt <<= LEN_DATE;
         tdt |= (year << (LEN_DATE_MM + LEN_DATE_DD));
         tdt |= (month << LEN_DATE_DD);
         tdt |= date;
@@ -88,6 +95,15 @@ public class Oid64Generator extends Abstract64Generator {
         tdt |= hms;
 
         tdt <<= (LEN_INS + LEN_SEQ);
+    }
+
+    private synchronized void waiting() {
+        while (System.currentTimeMillis() - timestamp < 1000) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+            }
+        }
     }
 
 

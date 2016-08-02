@@ -23,27 +23,30 @@ SOFTWARE.
  */
 package wang.yanjiong.toid;
 
+import org.junit.Test;
+
+import static wang.yanjiong.toid.Tid64Type.I128S512;
+
 /**
- * Created by WangYanJiong on 8/1/16.
+ * Created by WangYanJiong on 7/26/16.
  */
-public class Oid64 {
 
-    private String stringValue;
+public class Oid64Test {
 
-    public static final int FIELD_TO = 1;
+    @Test
+    public void TestGenerator() {
+        Oid64Generator generator = new Oid64Generator(12);
+        generator.next();
+        int size = 0xFFFFF;
+        long now = System.currentTimeMillis();
+        int i = 0;
+        for (; i < size; i++) {
+            Oid64 id = generator.next();
+//            System.out.println(id.value() + ", " + id + ", " + id.value());
+        }
+        System.out.println(System.currentTimeMillis() - now);
+        System.out.println(i);
 
-    private long id;
-
-    public Oid64(long id) {
-        this.id = id;
-    }
-
-    public long value() {
-        return id;
-    }
-
-    public String toString() {
-        return Long.toHexString(id);
     }
 
 }
