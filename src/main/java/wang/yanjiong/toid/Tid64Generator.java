@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid.tid64;
+package wang.yanjiong.toid;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,31 +32,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 
-public class Tid64Generator {
+public class Tid64Generator extends Abstract64Generator {
 
-    public static final int LEN_TOTAL = 64;
-
-    private static final int LEN_TO = 1;
-
-    private static final int LEN_TYPE = 3;
-
-    private static final int LEN_DATE_YY = 6;
-
-    private static final int LEN_DATE_MM = 4;
-
-    private static final int LEN_DATE_DD = 5;
-
-    private static final int LEN_TIME_HH = 5;
-
-    private static final int LEN_TIME_MM = 6;
-
-    private static final int LEN_TIME_SS = 6;
-
-    private static final int LEN_DATE = LEN_DATE_YY + LEN_DATE_MM + LEN_DATE_DD;
-
-    private static final int LEN_TIME = LEN_TIME_HH + LEN_TIME_MM + LEN_TIME_SS;
-
-    private static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_TO - LEN_TYPE;
+    private static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_TO - LEN_TID_TYPE;
 
     private static final int[] LEN_TYPE_SYS = {5, 6, 7, 8, 9, 10, 11, 12};
 
@@ -70,7 +48,6 @@ public class Tid64Generator {
     private static final long MASK_DATE = (1 << LEN_DATE_DD) - 1;
     private static final long MASK_MONTH = (1 << LEN_DATE_MM) - 1;
     private static final long MASK_YEAR = (1 << LEN_DATE_YY) - 1;
-
 
     private long type;
 
@@ -105,7 +82,7 @@ public class Tid64Generator {
     private synchronized void refresh(long now) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(now));
-        long year = calendar.get(Calendar.YEAR) - 2000;
+        long year = calendar.get(Calendar.YEAR) - BASE_YEAR;
         long month = calendar.get(Calendar.MONTH) + 1; // base 0
         long date = calendar.get(Calendar.DATE); // base 1
         long hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -115,7 +92,7 @@ public class Tid64Generator {
         timestamp = now;
         serial = new AtomicInteger();
 
-        ttdt <<= LEN_TYPE;
+        ttdt <<= LEN_TID_TYPE;
         ttdt |= type;
 
         ttdt <<= LEN_DATE;
@@ -135,7 +112,7 @@ public class Tid64Generator {
 
 
     static short[] id2Array(final long id) {
-        final short type = (short) ((0x7) & (id >> (LEN_TOTAL - LEN_TO - LEN_TYPE)));
+        final short type = (short) ((0x7) & (id >> (LEN_TOTAL - LEN_TO - LEN_TID_TYPE)));
 
         final int l_ser = LEN_TYPE_SER[type];
         final int l_sisser = LEN_TYPE_INS[type] + l_ser;
@@ -160,24 +137,5 @@ public class Tid64Generator {
 
     }
 
-    private static String[] PADS = {
-            "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
-            "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-            "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
-            "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
-            "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
-            "50", "51", "52", "53", "54", "55", "56", "57", "58", "59",
-            "60", "61", "62", "63", "64", "65", "66", "67", "68", "69",
-            "70", "71", "72", "73", "74", "75", "76", "77", "78", "79",
-            "80", "81", "82", "83", "84", "85", "86", "87", "88", "89",
-            "90", "91", "92", "93", "94", "95", "96", "97", "98", "99"
-    };
 
-    static String padding(short number) {
-        return PADS[number];
-    }
-
-    public static long fromString(String id) {
-        return Long.valueOf(id, 16);
-    }
 }

@@ -24,10 +24,8 @@ SOFTWARE.
 package wang.yanjiong.toid;
 
 import org.junit.Test;
-import wang.yanjiong.toid.tid64.Tid64;
-import wang.yanjiong.toid.tid64.Tid64Generator;
 
-import static wang.yanjiong.toid.tid64.Tid64Type.*;
+import static wang.yanjiong.toid.Tid64Type.*;
 
 /**
  * Created by WangYanJiong on 7/26/16.
@@ -46,7 +44,7 @@ public class Tid64Test {
         long now = System.currentTimeMillis();
         for (int i = 0; i < 200; i++) {
             Tid64 id = generator.next();
-            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + Tid64Generator.fromString(id.toString()));
+            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + Tid64Generator.fromHexString(id.toString()));
         }
         System.out.println(System.currentTimeMillis() - now);
 
