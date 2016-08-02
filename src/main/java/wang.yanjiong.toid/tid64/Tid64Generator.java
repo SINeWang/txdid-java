@@ -78,7 +78,7 @@ public class Tid64Generator {
 
     private long timestamp;
 
-    private long dttt;
+    private long ttdt;
 
     private AtomicInteger serial;
 
@@ -98,7 +98,7 @@ public class Tid64Generator {
         if (now - timestamp > 1000) {
             refresh(now);
         }
-        long id = dttt | si | serial.incrementAndGet();
+        long id = ttdt | si | serial.incrementAndGet();
         return new Tid64(id);
     }
 
@@ -115,21 +115,21 @@ public class Tid64Generator {
         timestamp = now;
         serial = new AtomicInteger();
 
-        dttt <<= LEN_TYPE;
-        dttt |= type;
+        ttdt <<= LEN_TYPE;
+        ttdt |= type;
 
-        dttt <<= LEN_DATE;
-        dttt |= (year << (LEN_DATE_MM + LEN_DATE_DD));
-        dttt |= (month << LEN_DATE_DD);
-        dttt |= date;
+        ttdt <<= LEN_DATE;
+        ttdt |= (year << (LEN_DATE_MM + LEN_DATE_DD));
+        ttdt |= (month << LEN_DATE_DD);
+        ttdt |= date;
 
-        dttt <<= LEN_TIME;
+        ttdt <<= LEN_TIME;
         long hms = hour << LEN_TIME_MM + LEN_TIME_SS;
         hms |= minute << LEN_TIME_SS;
         hms |= second;
-        dttt |= hms;
+        ttdt |= hms;
 
-        dttt <<= LEN_SIS;
+        ttdt <<= LEN_SIS;
 
     }
 
