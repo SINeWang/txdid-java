@@ -23,7 +23,6 @@ SOFTWARE.
  */
 package wang.yanjiong.toid;
 
-import java.awt.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
