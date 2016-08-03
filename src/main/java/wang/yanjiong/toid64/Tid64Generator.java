@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Tid64Generator extends Abstract64Generator {
 
-    protected static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_TO - LEN_TID_TYPE;
+    protected static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_R - LEN_TID_TYPE;
 
     protected static final int[] LEN_TYPE_SYS = {5, 6, 7, 8, 9, 10, 11, 12};
 

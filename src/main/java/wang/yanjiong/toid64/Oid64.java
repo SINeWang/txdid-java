@@ -23,16 +23,31 @@ SOFTWARE.
  */
 package wang.yanjiong.toid64;
 
+import static wang.yanjiong.toid64.Tid64Parser.oid2Array;
+import static wang.yanjiong.toid64.Toid64Parser.padding;
+
 /**
  * Created by WangYanJiong on 8/1/16.
  */
-public class Oid64 {
+public class Oid64 extends AbstractToid64 {
 
-    private String stringValue;
+    private static final int FIELD_R = 0;
 
-    public static final int FIELD_TO = 1;
+    private static final int FIELD_YY = 1;
 
-    private long id;
+    private static final int FIELD_MM = 2;
+
+    private static final int FIELD_DD = 3;
+
+    private static final int FIELD_HH = 4;
+
+    private static final int FIELD_mm = 5;
+
+    private static final int FIELD_SS = 6;
+
+    private static final int FIELD_INS = 7;
+
+    private static final int FIELD_SER = 8;
 
     public Oid64(long id) {
         this.id = id;
@@ -45,5 +60,85 @@ public class Oid64 {
     public String toString() {
         return Long.toHexString(id);
     }
+
+    public String decoded() {
+        if (id != 0) {
+            if (array == null) {
+                parse();
+            }
+            if (array[FIELD_R] != 0) {
+                throw new IllegalArgumentException("Invalid TOID start with 0x1, {" + Long.toHexString(id) + "}");
+            }
+        }
+        return stringValue;
+    }
+
+    private synchronized void parse() {
+        if (array != null) {
+            return;
+        }
+        array = oid2Array(id);
+        stringValue = "O" + DELIMITER + getYear() + padding(getMonth()) + padding(getDate())
+                + "." + padding(getHour()) + padding(getMinute()) + padding(getSecond()) +
+                DELIMITER + getInstance() + "." + getSerial();
+    }
+
+
+    public short getYear() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_YY];
+    }
+
+    public short getMonth() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_MM];
+    }
+
+    public short getDate() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_DD];
+    }
+
+    public short getHour() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_HH];
+    }
+
+    public short getMinute() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_mm];
+    }
+
+    public short getSecond() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_SS];
+    }
+
+    public short getInstance() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_INS];
+    }
+
+    public short getSerial() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_SER];
+    }
+
 
 }

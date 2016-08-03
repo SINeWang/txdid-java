@@ -23,39 +23,38 @@ SOFTWARE.
  */
 package wang.yanjiong.toid64;
 
-import static wang.yanjiong.toid64.Tid64Parser.id2Array;
+import static wang.yanjiong.toid64.Tid64Parser.tid2Array;
 import static wang.yanjiong.toid64.Toid64Parser.padding;
 
 /**
  * Created by WangYanJiong on 7/29/16.
  */
-public class Tid64 {
+public class Tid64 extends AbstractToid64 {
 
     private String stringValue;
 
-    public static final int FIELD_TO = 0;
+    private static final int FIELD_R = 0;
 
-    public static final int FIELD_T = 1;
+    private static final int FIELD_T = 1;
 
-    public static final int FIELD_YY = 2;
+    private static final int FIELD_YY = 2;
 
-    public static final int FIELD_MM = 3;
+    private static final int FIELD_MM = 3;
 
-    public static final int FIELD_DD = 4;
+    private static final int FIELD_DD = 4;
 
-    public static final int FIELD_HH = 5;
+    private static final int FIELD_HH = 5;
 
-    public static final int FIELD_mm = 6;
+    private static final int FIELD_mm = 6;
 
-    public static final int FIELD_SS = 7;
+    private static final int FIELD_SS = 7;
 
-    public static final int FIELD_SYS = 8;
+    private static final int FIELD_SYS = 8;
 
-    public static final int FIELD_INS = 9;
+    private static final int FIELD_INS = 9;
 
-    public static final int FIELD_SER = 10;
+    private static final int FIELD_SER = 10;
 
-    public static final String DELIMITER = "-";
 
     public enum Tid64Type {
 
@@ -98,7 +97,7 @@ public class Tid64 {
             if (array == null) {
                 parse();
             }
-            if (array[FIELD_TO] != 0) {
+            if (array[FIELD_R] != 0) {
                 throw new IllegalArgumentException("Invalid TID start with 0x1, {" + Long.toHexString(id) + "}");
             }
         }
@@ -109,7 +108,7 @@ public class Tid64 {
         if (array != null) {
             return;
         }
-        array = id2Array(id);
+        array = tid2Array(id);
         stringValue = "T" + getType() + DELIMITER + getYear() + padding(getMonth()) + padding(getDate())
                 + "." + padding(getHour()) + padding(getMinute()) + padding(getSecond()) +
                 DELIMITER + getSystem() + "." + getInstance() + "." + getSerial();

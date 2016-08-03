@@ -30,7 +30,7 @@ public abstract class Abstract64Generator {
 
     static final int LEN_TOTAL = 64;
 
-    static final int LEN_TO = 1;
+    static final int LEN_R = 1;
 
     static final int LEN_TID_TYPE = 3;
 
