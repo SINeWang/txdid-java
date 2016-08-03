@@ -36,20 +36,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Tid64Generator extends Abstract64Generator {
 
-    protected static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_R - LEN_TID_TYPE;
+    private static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_R - LEN_TID_TYPE;
 
-    protected static final int[] LEN_TYPE_SYS = {5, 6, 7, 8, 9, 10, 11, 12};
+//    private static final int[] LEN_TYPE_SYS = {5, 6, 7, 8, 9, 10, 11, 12};
 
-    protected static final int[] LEN_TYPE_INS = {12, 11, 10, 9, 9, 8, 7, 7};
+    private static final int[] LEN_TYPE_INS = {12, 11, 10, 9, 9, 8, 7, 7};
 
-    protected static final int[] LEN_TYPE_SER = {11, 11, 11, 11, 10, 10, 10, 9};
+    private static final int[] LEN_TYPE_SER = {11, 11, 11, 11, 10, 10, 10, 9};
 
-    protected static final long MASK_SECOND = (1 << LEN_TIME_SS) - 1;
-    protected static final long MASK_MINUTE = (1 << LEN_TIME_MM) - 1;
-    protected static final long MASK_HOUR = (1 << LEN_TIME_HH) - 1;
-    protected static final long MASK_DATE = (1 << LEN_DATE_DD) - 1;
-    protected static final long MASK_MONTH = (1 << LEN_DATE_MM) - 1;
-    protected static final long MASK_YEAR = (1 << LEN_DATE_YY) - 1;
 
     private long type;
 
@@ -80,7 +74,7 @@ public class Tid64Generator extends Abstract64Generator {
             waiting();
             refresh(System.currentTimeMillis());
         }
-        long id = ttdt | si | serial.incrementAndGet();
+        long id = ttdt | si | seq;
         return new Tid64(id);
     }
 

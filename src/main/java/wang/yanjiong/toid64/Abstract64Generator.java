@@ -52,6 +52,19 @@ public abstract class Abstract64Generator {
 
     static final short BASE_YEAR = 2000;
 
+    static final long MASK_SECOND = (1 << LEN_TIME_SS) - 1;
+
+    static final long MASK_MINUTE = (1 << LEN_TIME_MM) - 1;
+
+    static final long MASK_HOUR = (1 << LEN_TIME_HH) - 1;
+
+    static final long MASK_DATE = (1 << LEN_DATE_DD) - 1;
+
+    static final long MASK_MONTH = (1 << LEN_DATE_MM) - 1;
+
+    static final long MASK_YEAR = (1 << LEN_DATE_YY) - 1;
+
+
     long timestamp;
 
     synchronized void waiting() {

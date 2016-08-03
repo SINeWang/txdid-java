@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package wang.yanjiong.toid64;
 
-import static wang.yanjiong.toid64.Tid64Parser.oid2Array;
+import static wang.yanjiong.toid64.Toid64Parser.oid2Array;
 import static wang.yanjiong.toid64.Toid64Parser.padding;
 
 /**
@@ -31,7 +31,6 @@ import static wang.yanjiong.toid64.Toid64Parser.padding;
  */
 public class Oid64 extends AbstractToid64 {
 
-    private static final int FIELD_R = 0;
 
     private static final int FIELD_YY = 1;
 
@@ -53,27 +52,7 @@ public class Oid64 extends AbstractToid64 {
         this.id = id;
     }
 
-    public long value() {
-        return id;
-    }
-
-    public String toString() {
-        return Long.toHexString(id);
-    }
-
-    public String decoded() {
-        if (id != 0) {
-            if (array == null) {
-                parse();
-            }
-            if (array[FIELD_R] != 0) {
-                throw new IllegalArgumentException("Invalid TOID start with 0x1, {" + Long.toHexString(id) + "}");
-            }
-        }
-        return stringValue;
-    }
-
-    private synchronized void parse() {
+    synchronized void parse() {
         if (array != null) {
             return;
         }

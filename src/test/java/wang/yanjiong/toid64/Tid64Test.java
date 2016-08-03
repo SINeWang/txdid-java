@@ -26,6 +26,7 @@ package wang.yanjiong.toid64;
 import org.junit.Test;
 
 import static wang.yanjiong.toid64.Tid64.Tid64Type.*;
+import static wang.yanjiong.toid64.Toid64Parser.fromHexString;
 
 /**
  * Created by WangYanJiong on 7/26/16.
@@ -44,7 +45,7 @@ public class Tid64Test {
         long now = System.currentTimeMillis();
         for (int i = 0; i < 200; i++) {
             Tid64 id = generator.next();
-            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + Tid64Generator.fromHexString(id.toString()));
+            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + fromHexString(id.toString()));
         }
         System.out.println(System.currentTimeMillis() - now);
 

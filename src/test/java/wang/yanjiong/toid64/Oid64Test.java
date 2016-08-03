@@ -40,7 +40,7 @@ public class Oid64Test {
         int i = 0;
         for (; i < size; i++) {
             Oid64 id = generator.next();
-//            System.out.println(id.value() + ", " + id + ", " + id.value());
+            System.out.println(id.value() + ", " + id + ", " + id.value());
         }
         System.out.println(System.currentTimeMillis() - now);
         System.out.println(i);
