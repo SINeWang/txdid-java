@@ -42,12 +42,18 @@ public class Oid64Generator extends Abstract64Generator {
 
     private long instance;
 
+    @Deprecated
+    public Oid64Generator(){
+        this.timestamp = 0;
+        this.instance  = 0;
+    }
+
 
     public Oid64Generator(int instance) {
-        this.timestamp = 0;
         if ((instance >> 12) > 0) {
             throw new IllegalArgumentException("illegal instance {" + instance + "}");
         }
+        this.timestamp = 0;
         this.instance = instance;
         this.instance <<= LEN_SEQ;
     }
