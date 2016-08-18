@@ -21,34 +21,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid64;
-
-import org.junit.Test;
-
-import static wang.yanjiong.toid64.Tid64.Tid64Type.*;
-import static wang.yanjiong.toid64.Toid64Parser.fromHexString;
+package wang.yanjiong.derid64;
 
 /**
- * Created by WangYanJiong on 7/26/16.
+ * Created by WangYanJiong on 8/3/16.
  */
+public abstract class AbstractDerid64 {
 
-public class Tid64Test {
+    static final String DELIMITER = "-";
 
-    @Test
-    public void TestGenerator() {
-        Tid64Generator generator = new Tid64Generator(I128S512, 12, 12);
-        Tid64 tid64 = generator.next();
+    private static final int FIELD_R = 0;
 
-        String[] s = tid64.toString().split("-");
+    String stringValue;
 
+    long id;
 
-        long now = System.currentTimeMillis();
-        for (int i = 0; i < 200; i++) {
-            Tid64 id = generator.next();
-            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + fromHexString(id.toString()));
-        }
-        System.out.println(System.currentTimeMillis() - now);
+    short[] array;
 
+    abstract void parse();
+
+    public long value() {
+        return id;
     }
 
+
+    public String toString() {
+        return Long.toHexString(id);
+    }
+
+    public String decoded() {
+        if (id != 0) {
+            if (array == null) {
+                parse();
+            }
+            if (array[FIELD_R] != 0) {
+                throw new IllegalArgumentException("Invalid TOID start with 0x1, {" + Long.toHexString(id) + "}");
+            }
+        }
+        return stringValue;
+    }
 }

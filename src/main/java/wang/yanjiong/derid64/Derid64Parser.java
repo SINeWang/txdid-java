@@ -21,28 +21,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid64;
+package wang.yanjiong.derid64;
 
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_DATE_DD;
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_DATE_MM;
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_R;
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_TID_TYPE;
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_TIME;
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_TIME_MM;
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_TIME_SS;
-import static wang.yanjiong.toid64.Abstract64Generator.LEN_TOTAL;
-import static wang.yanjiong.toid64.Abstract64Generator.MASK_DATE;
-import static wang.yanjiong.toid64.Abstract64Generator.MASK_HOUR;
-import static wang.yanjiong.toid64.Abstract64Generator.MASK_MINUTE;
-import static wang.yanjiong.toid64.Abstract64Generator.MASK_MONTH;
-import static wang.yanjiong.toid64.Abstract64Generator.MASK_SECOND;
-import static wang.yanjiong.toid64.Abstract64Generator.MASK_YEAR;
-import static wang.yanjiong.toid64.Tid64Generator.*;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_DATE_DD;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_DATE_MM;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_R;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_TID_TYPE;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_TIME;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_TIME_MM;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_TIME_SS;
+import static wang.yanjiong.derid64.Abstract64Generator.LEN_TOTAL;
+import static wang.yanjiong.derid64.Abstract64Generator.MASK_DATE;
+import static wang.yanjiong.derid64.Abstract64Generator.MASK_HOUR;
+import static wang.yanjiong.derid64.Abstract64Generator.MASK_MINUTE;
+import static wang.yanjiong.derid64.Abstract64Generator.MASK_MONTH;
+import static wang.yanjiong.derid64.Abstract64Generator.MASK_SECOND;
+import static wang.yanjiong.derid64.Abstract64Generator.MASK_YEAR;
+import static wang.yanjiong.derid64.Rid64Generator.*;
 
 /**
  * Created by WangYanJiong on 8/2/16.
  */
-public class Toid64Parser {
+public class Derid64Parser {
 
     private static String[] PADS = {
             "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",

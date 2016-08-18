@@ -21,61 +21,55 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid64;
-
-import wang.yanjiong.toid64.Tid64.Tid64Type;
+package wang.yanjiong.derid64;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by WangYanJiong on 7/22/16.
+ * Created by WangYanJiong on 8/2/16.
  */
+public class Eid64Generator extends Abstract64Generator {
 
+    static final int LEN_INS = 12;
 
-public class Tid64Generator extends Abstract64Generator {
+    static final int LEN_SEQ = 19;
 
-    static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_R - LEN_TID_TYPE;
-
-    static final int[] LEN_TYPE_SYS = {5, 6, 7, 8, 9, 10, 11, 12};
-
-    static final int[] LEN_TYPE_INS = {12, 11, 10, 9, 9, 8, 7, 7};
-
-    static final int[] LEN_TYPE_SER = {11, 11, 11, 11, 10, 10, 10, 9};
-
-
-    private long type;
-
-    private long si;
-
-    private long ttdt;
+    private long tdt;
 
     private AtomicInteger serial;
 
+    private long instance;
 
-    public Tid64Generator(Tid64Type type, int system, int instance) {
+    @Deprecated
+    public Eid64Generator(){
         this.timestamp = 0;
-        this.type = type.ordinal();
-        long lengthOfT = LEN_TYPE_SER[type.ordinal()];
-        long lengthOfIT = LEN_TYPE_INS[type.ordinal()] + lengthOfT;
-        this.si |= system << lengthOfIT;
-        this.si |= instance << lengthOfT;
-
+        this.instance  = 0;
     }
 
-    public Tid64 next() {
+
+    public Eid64Generator(int instance) {
+        if ((instance >> 12) > 0) {
+            throw new IllegalArgumentException("illegal instance {" + instance + "}");
+        }
+        this.timestamp = 0;
+        this.instance = instance;
+        this.instance <<= LEN_SEQ;
+    }
+
+    public Eid64 next() {
         long now = System.currentTimeMillis();
         if (now - timestamp > 1000) {
             refresh(now);
         }
         long seq = serial.incrementAndGet();
-        if (seq >= (2 << LEN_TYPE_SER[(int) type])) {
+        if (seq > 0x7FFFF) {
             waiting();
             refresh(System.currentTimeMillis());
         }
-        long id = ttdt | si | seq;
-        return new Tid64(id);
+        long id = tdt | instance | seq;
+        return new Eid64(id);
     }
 
     private synchronized void refresh(long now) {
@@ -88,26 +82,22 @@ public class Tid64Generator extends Abstract64Generator {
         long minute = calendar.get(Calendar.MINUTE);
         long second = calendar.get(Calendar.SECOND);
 
-        timestamp = now;
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        timestamp = calendar.getTimeInMillis();
         serial = new AtomicInteger();
 
-        ttdt <<= LEN_TID_TYPE;
-        ttdt |= type;
+        tdt |= (year << (LEN_DATE_MM + LEN_DATE_DD));
+        tdt |= (month << LEN_DATE_DD);
+        tdt |= date;
 
-        ttdt <<= LEN_DATE;
-        ttdt |= (year << (LEN_DATE_MM + LEN_DATE_DD));
-        ttdt |= (month << LEN_DATE_DD);
-        ttdt |= date;
-
-        ttdt <<= LEN_TIME;
+        tdt <<= LEN_TIME;
         long hms = hour << LEN_TIME_MM + LEN_TIME_SS;
         hms |= minute << LEN_TIME_SS;
         hms |= second;
-        ttdt |= hms;
+        tdt |= hms;
 
-        ttdt <<= LEN_SIS;
-
+        tdt <<= (LEN_INS + LEN_SEQ);
     }
-
 
 }

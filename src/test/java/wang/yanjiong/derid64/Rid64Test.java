@@ -21,43 +21,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid64;
+package wang.yanjiong.derid64;
+
+import org.junit.Test;
+
+import static wang.yanjiong.derid64.Derid64Parser.fromHexString;
+import static wang.yanjiong.derid64.Rid64.Tid64Type.I128S512;
 
 /**
- * Created by WangYanJiong on 8/3/16.
+ * Created by WangYanJiong on 7/26/16.
  */
-public abstract class AbstractToid64 {
 
-    static final String DELIMITER = "-";
+public class Rid64Test {
 
-    private static final int FIELD_R = 0;
+    @Test
+    public void TestGenerator() {
+        Rid64Generator generator = new Rid64Generator(I128S512, 12, 12);
+        Rid64 tid64 = generator.next();
 
-    String stringValue;
-
-    long id;
-
-    short[] array;
-
-    abstract void parse();
-
-    public long value() {
-        return id;
-    }
+        String[] s = tid64.toString().split("-");
 
 
-    public String toString() {
-        return Long.toHexString(id);
-    }
-
-    public String decoded() {
-        if (id != 0) {
-            if (array == null) {
-                parse();
-            }
-            if (array[FIELD_R] != 0) {
-                throw new IllegalArgumentException("Invalid TOID start with 0x1, {" + Long.toHexString(id) + "}");
-            }
+        long now = System.currentTimeMillis();
+        for (int i = 0; i < 200; i++) {
+            Rid64 id = generator.next();
+            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + fromHexString(id.toString()));
         }
-        return stringValue;
+        System.out.println(System.currentTimeMillis() - now);
+
     }
+
 }

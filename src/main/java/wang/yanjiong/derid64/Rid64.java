@@ -21,15 +21,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.toid64;
+package wang.yanjiong.derid64;
 
-import static wang.yanjiong.toid64.Toid64Parser.padding;
-import static wang.yanjiong.toid64.Toid64Parser.tid2Array;
+import static wang.yanjiong.derid64.Derid64Parser.padding;
+import static wang.yanjiong.derid64.Derid64Parser.tid2Array;
 
 /**
  * Created by WangYanJiong on 7/29/16.
  */
-public class Tid64 extends AbstractToid64 {
+public class Rid64 extends AbstractDerid64 {
 
     private static final int FIELD_T = 1;
 
@@ -72,7 +72,7 @@ public class Tid64 extends AbstractToid64 {
     }
 
 
-    Tid64(long id) {
+    Rid64(long id) {
         this.id = id;
     }
 
