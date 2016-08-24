@@ -21,30 +21,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.derid64;
-
-import org.junit.Test;
+package wang.yanjiong.derid.derid64;
 
 /**
- * Created by WangYanJiong on 7/26/16.
+ * Created by WangYanJiong on 8/3/16.
  */
+public abstract class AbstractDerid64 {
 
-public class Eid64Test {
+    static final String DELIMITER = "-";
 
-    @Test
-    public void TestGenerator() {
-        Eid64Generator generator = new Eid64Generator(12);
-        generator.next();
-        int size = 0xFFFFF;
-        long now = System.currentTimeMillis();
-        int i = 0;
-        for (; i < size; i++) {
-            Eid64 id = generator.next();
-            System.out.println(id.value() + ", " + id + ", " + id.value());
-        }
-        System.out.println(System.currentTimeMillis() - now);
-        System.out.println(i);
+    private static final int FIELD_R = 0;
 
+    String stringValue;
+
+    long id;
+
+    short[] array;
+
+    abstract void parse();
+
+    public long value() {
+        return id;
     }
 
+
+    public String toString() {
+        return Long.toHexString(id);
+    }
+
+    public String decoded() {
+        if (id != 0) {
+            if (array == null) {
+                parse();
+            }
+            if (array[FIELD_R] != 0) {
+                throw new IllegalArgumentException("Invalid TOID start with 0x1, {" + Long.toHexString(id) + "}");
+            }
+        }
+        return stringValue;
+    }
 }

@@ -21,34 +21,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.derid64;
+package wang.yanjiong.derid.derid64;
 
 import org.junit.Test;
-
-import static wang.yanjiong.derid64.Derid64Parser.fromHexString;
-import static wang.yanjiong.derid64.Rid64.Tid64Type.I128S512;
 
 /**
  * Created by WangYanJiong on 7/26/16.
  */
 
-public class Rid64Test {
+public class Eid64Test {
 
     @Test
     public void TestGenerator() {
-        Rid64Generator generator = new Rid64Generator(I128S512, 12, 12);
-        Rid64 tid64 = generator.next();
-
-        String[] s = tid64.toString().split("-");
-
-
-        long now = System.currentTimeMillis();
-        for (int i = 0; i < 200; i++) {
-            Rid64 id = generator.next();
-            System.out.println(id.value() + ", " + id + ", " + id.decoded() + ", " + fromHexString(id.toString()));
-        }
-        System.out.println(System.currentTimeMillis() - now);
-
+        Eid64Generator generator = new Eid64Generator(12);
+        generator.next();
     }
 
 }

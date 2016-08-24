@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package wang.yanjiong.derid64;
+package wang.yanjiong.derid.derid64;
 
 /**
  * Created by WangYanJiong on 7/29/16.
