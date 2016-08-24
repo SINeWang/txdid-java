@@ -23,32 +23,53 @@ SOFTWARE.
  */
 package wang.yanjiong.derid64;
 
-import static wang.yanjiong.derid64.Derid64Parser.oid2Array;
-import static wang.yanjiong.derid64.Derid64Parser.padding;
-
 /**
- * Created by WangYanJiong on 8/1/16.
+ * Created by WangYanJiong on 7/29/16.
  */
-public class Eid64 extends AbstractDerid64 {
+public class Rid64 extends AbstractDerid64 {
+
+    private static final int FIELD_T = 1;
+
+    private static final int FIELD_YY = 2;
+
+    private static final int FIELD_MM = 3;
+
+    private static final int FIELD_DD = 4;
+
+    private static final int FIELD_HH = 5;
+
+    private static final int FIELD_mm = 6;
+
+    private static final int FIELD_SS = 7;
+
+    private static final int FIELD_SYS = 8;
+
+    private static final int FIELD_INS = 9;
+
+    private static final int FIELD_SER = 10;
 
 
-    private static final int FIELD_YY = 1;
+    public enum Tid64Type {
 
-    private static final int FIELD_MM = 2;
+        I4096S2048,
 
-    private static final int FIELD_DD = 3;
+        I2048S2048,
 
-    private static final int FIELD_HH = 4;
+        I1024S2048,
 
-    private static final int FIELD_mm = 5;
+        I512S2048,
 
-    private static final int FIELD_SS = 6;
+        I512S1024,
 
-    private static final int FIELD_INS = 7;
+        I256S1024,
 
-    private static final int FIELD_SER = 8;
+        I128S1024,
 
-    public Eid64(long id) {
+        I128S512
+    }
+
+
+    Rid64(long id) {
         this.id = id;
     }
 
@@ -56,12 +77,11 @@ public class Eid64 extends AbstractDerid64 {
         if (array != null) {
             return;
         }
-        array = oid2Array(id);
-        stringValue = "O" + DELIMITER + getYear() + padding(getMonth()) + padding(getDate())
-                + "." + padding(getHour()) + padding(getMinute()) + padding(getSecond()) +
-                DELIMITER + getInstance() + "." + getSerial();
+        array = Derid64Parser.tid2Array(id);
+        stringValue = "T" + getType() + DELIMITER + getYear() + Derid64Parser.padding(getMonth()) + Derid64Parser.padding(getDate())
+                + "." + Derid64Parser.padding(getHour()) + Derid64Parser.padding(getMinute()) + Derid64Parser.padding(getSecond()) +
+                DELIMITER + getSystem() + "." + getInstance() + "." + getSerial();
     }
-
 
     public short getYear() {
         if (array == null) {
@@ -105,6 +125,20 @@ public class Eid64 extends AbstractDerid64 {
         return array[FIELD_SS];
     }
 
+    public short getType() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_T];
+    }
+
+    public short getSystem() {
+        if (array == null) {
+            parse();
+        }
+        return array[FIELD_SYS];
+    }
+
     public short getInstance() {
         if (array == null) {
             parse();
@@ -118,6 +152,5 @@ public class Eid64 extends AbstractDerid64 {
         }
         return array[FIELD_SER];
     }
-
 
 }

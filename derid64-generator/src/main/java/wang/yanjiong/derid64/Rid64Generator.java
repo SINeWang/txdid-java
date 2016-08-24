@@ -23,8 +23,6 @@ SOFTWARE.
  */
 package wang.yanjiong.derid64;
 
-import wang.yanjiong.derid64.Rid64.Tid64Type;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,7 +52,7 @@ public class Rid64Generator extends Abstract64Generator {
     private AtomicInteger serial;
 
 
-    public Rid64Generator(Tid64Type type, int system, int instance) {
+    public Rid64Generator(Rid64.Tid64Type type, int system, int instance) {
         this.timestamp = 0;
         this.type = type.ordinal();
         long lengthOfT = LEN_TYPE_SER[type.ordinal()];

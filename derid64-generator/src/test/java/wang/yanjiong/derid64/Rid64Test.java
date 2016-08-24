@@ -25,8 +25,8 @@ package wang.yanjiong.derid64;
 
 import org.junit.Test;
 
-import static wang.yanjiong.derid64.Derid64Parser.fromHexString;
-import static wang.yanjiong.derid64.Rid64.Tid64Type.I128S512;
+import static wang.yanjiong.derid64.derid64.Derid64Parser.fromHexString;
+import static wang.yanjiong.derid64.derid64.Rid64.Tid64Type.I128S512;
 
 /**
  * Created by WangYanJiong on 7/26/16.
