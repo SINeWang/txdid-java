@@ -46,7 +46,7 @@ public abstract class AbstractDerid64 {
 
 
     public String toString() {
-        return Long.toHexString(id);
+        return Long.toString(id);
     }
 
     public String decoded() {
