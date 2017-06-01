@@ -43,9 +43,9 @@ public class Eid64Generator extends Abstract64Generator {
     private long instance;
 
     @Deprecated
-    public Eid64Generator(){
+    public Eid64Generator() {
         this.timestamp = 0;
-        this.instance  = 0;
+        this.instance = 0;
     }
 
 
@@ -58,7 +58,7 @@ public class Eid64Generator extends Abstract64Generator {
         this.instance <<= LEN_SEQ;
     }
 
-    public Eid64 born() {
+    public long born() {
         long now = System.currentTimeMillis();
         if (now - timestamp > 1000) {
             refresh(now);
@@ -68,8 +68,7 @@ public class Eid64Generator extends Abstract64Generator {
             waiting();
             refresh(System.currentTimeMillis());
         }
-        long id = tdt | instance | seq;
-        return new Eid64(id);
+        return tdt | instance | seq;
     }
 
     private synchronized void refresh(long now) {
