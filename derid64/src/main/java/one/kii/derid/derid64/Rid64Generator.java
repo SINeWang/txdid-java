@@ -75,6 +75,7 @@ public class Rid64Generator extends Abstract64Generator {
         return ttdt | si | seq;
     }
 
+
     private synchronized void refresh(long now) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(now));

@@ -64,8 +64,9 @@ public abstract class Abstract64Generator {
 
     static final long MASK_YEAR = (1 << LEN_DATE_YY) - 1;
 
-
     long timestamp;
+
+    abstract long born();
 
     synchronized void waiting() {
         while (System.currentTimeMillis() - timestamp < 1000) {
@@ -76,4 +77,14 @@ public abstract class Abstract64Generator {
         }
     }
 
+    public long[] born(int ids) {
+        if (ids <= 0) {
+            ids = 0;
+        }
+        long[] array = new long[ids];
+        for (int i = 0; i < ids; i++) {
+            array[i] = born();
+        }
+        return array;
+    }
 }
