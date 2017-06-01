@@ -16,7 +16,7 @@ ext {
 
 scmVersion {
   tag {
-    prefix = 'v'
+    prefix = 'derid'
   }
 }
 
