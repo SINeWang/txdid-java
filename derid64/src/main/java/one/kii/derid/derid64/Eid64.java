@@ -45,6 +45,8 @@ public class Eid64 extends AbstractDerid64 {
 
     private static final int FIELD_SER = 8;
 
+    private static final String PREFIX = "E";
+
     public Eid64(long id) {
         this.id = id;
     }
@@ -54,9 +56,25 @@ public class Eid64 extends AbstractDerid64 {
             return;
         }
         array = Derid64Parser.oid2Array(id);
-        stringValue = "O" + DELIMITER + getYear() + Derid64Parser.padding(getMonth()) + Derid64Parser.padding(getDate())
-                + "." + Derid64Parser.padding(getHour()) + Derid64Parser.padding(getMinute()) + Derid64Parser.padding(getSecond()) +
-                DELIMITER + getInstance() + "." + getSerial();
+
+        array = Derid64Parser.tid2Array(id);
+
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(PREFIX);
+        buffer.append(DELIMITER);
+        buffer.append(getYear());
+        buffer.append(Derid64Parser.padding(getMonth()));
+        buffer.append(Derid64Parser.padding(getDate()));
+        buffer.append(DOT);
+        buffer.append(Derid64Parser.padding(getHour()));
+        buffer.append(Derid64Parser.padding(getMinute()));
+        buffer.append(Derid64Parser.padding(getSecond()));
+        buffer.append(DELIMITER);
+        buffer.append(getInstance());
+        buffer.append(DOT);
+        buffer.append(getSerial());
+        stringValue = buffer.toString();
     }
 
 

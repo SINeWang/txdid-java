@@ -30,6 +30,8 @@ public abstract class AbstractDerid64 {
 
     static final String DELIMITER = "-";
 
+    static final String DOT = ".";
+
     private static final int FIELD_R = 0;
 
     String stringValue;
@@ -44,18 +46,17 @@ public abstract class AbstractDerid64 {
         return id;
     }
 
-
-    public String toString() {
+    public String toHexString() {
         return Long.toString(id);
     }
 
-    public String decoded() {
+    public String toString() {
         if (id != 0) {
             if (array == null) {
                 parse();
             }
             if (array[FIELD_R] != 0) {
-                throw new IllegalArgumentException("Invalid TOID start with 0x1, {" + Long.toHexString(id) + "}");
+                throw new IllegalArgumentException("Invalid ERID start with 0x1, {" + Long.toHexString(id) + "}");
             }
         }
         return stringValue;

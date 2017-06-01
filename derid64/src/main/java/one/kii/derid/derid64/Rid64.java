@@ -48,26 +48,7 @@ public class Rid64 extends AbstractDerid64 {
 
     private static final int FIELD_SER = 10;
 
-
-    public enum Tid64Type {
-
-        I4096S2048,
-
-        I2048S2048,
-
-        I1024S2048,
-
-        I512S2048,
-
-        I512S1024,
-
-        I256S1024,
-
-        I128S1024,
-
-        I128S512
-    }
-
+    private static final String PREFIX = "R";
 
     Rid64(long id) {
         this.id = id;
@@ -78,9 +59,26 @@ public class Rid64 extends AbstractDerid64 {
             return;
         }
         array = Derid64Parser.tid2Array(id);
-        stringValue = "T" + getType() + DELIMITER + getYear() + Derid64Parser.padding(getMonth()) + Derid64Parser.padding(getDate())
-                + "." + Derid64Parser.padding(getHour()) + Derid64Parser.padding(getMinute()) + Derid64Parser.padding(getSecond()) +
-                DELIMITER + getSystem() + "." + getInstance() + "." + getSerial();
+
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(PREFIX);
+        buffer.append(getType());
+        buffer.append(DELIMITER);
+        buffer.append(getYear());
+        buffer.append(Derid64Parser.padding(getMonth()));
+        buffer.append(Derid64Parser.padding(getDate()));
+        buffer.append(DOT);
+        buffer.append(Derid64Parser.padding(getHour()));
+        buffer.append(Derid64Parser.padding(getMinute()));
+        buffer.append(Derid64Parser.padding(getSecond()));
+        buffer.append(DELIMITER);
+        buffer.append(getSystem());
+        buffer.append(DOT);
+        buffer.append(getInstance());
+        buffer.append(DOT);
+        buffer.append(getSerial());
+        stringValue = buffer.toString();
     }
 
     public short getYear() {
@@ -151,6 +149,25 @@ public class Rid64 extends AbstractDerid64 {
             parse();
         }
         return array[FIELD_SER];
+    }
+
+    public enum Tid64Type {
+
+        I4096S2048,
+
+        I2048S2048,
+
+        I1024S2048,
+
+        I512S2048,
+
+        I512S1024,
+
+        I256S1024,
+
+        I128S1024,
+
+        I128S512
     }
 
 }
