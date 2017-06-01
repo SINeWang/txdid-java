@@ -62,7 +62,7 @@ public class Rid64Generator extends Abstract64Generator {
 
     }
 
-    public Rid64 next() {
+    public Rid64 born() {
         long now = System.currentTimeMillis();
         if (now - timestamp > 1000) {
             refresh(now);

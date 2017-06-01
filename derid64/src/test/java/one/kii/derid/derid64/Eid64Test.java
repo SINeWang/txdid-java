@@ -34,7 +34,9 @@ public class Eid64Test {
     @Test
     public void TestGenerator() {
         Eid64Generator generator = new Eid64Generator(12);
-        generator.next();
+        Eid64 eid = generator.born();
+        System.out.println(eid.toHexString());
+        System.out.println(eid.toString());
     }
 
 }

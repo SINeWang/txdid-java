@@ -49,7 +49,7 @@ public class Derid64Parser {
         return Long.valueOf(id, 16);
     }
 
-    static short[] tid2Array(final long id) {
+    static short[] rid2Array(final long id) {
         final short type = (short) ((0x7) & (id >> (Abstract64Generator.LEN_TOTAL - Abstract64Generator.LEN_R - Abstract64Generator.LEN_TID_TYPE)));
 
         final int l_ser = Rid64Generator.LEN_TYPE_SER[type];
@@ -74,7 +74,7 @@ public class Derid64Parser {
         return new short[]{r, type, year, month, date, hour, minute, second, system, instance, serial};
     }
 
-    static short[] oid2Array(final long id) {
+    static short[] eid2Array(final long id) {
         final int l_ser = 19;
         final int l_ins = 12;
         final int l_is = 31;

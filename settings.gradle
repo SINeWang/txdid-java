@@ -1,2 +1,2 @@
-rootProject.name = 'derid'
+rootProject.name = 'derid-java'
 include ':derid64'

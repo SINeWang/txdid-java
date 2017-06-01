@@ -58,7 +58,7 @@ public class Rid64 extends AbstractDerid64 {
         if (array != null) {
             return;
         }
-        array = Derid64Parser.tid2Array(id);
+        array = Derid64Parser.rid2Array(id);
 
         StringBuffer buffer = new StringBuffer();
 

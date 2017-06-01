@@ -58,7 +58,7 @@ public class Eid64Generator extends Abstract64Generator {
         this.instance <<= LEN_SEQ;
     }
 
-    public Eid64 next() {
+    public Eid64 born() {
         long now = System.currentTimeMillis();
         if (now - timestamp > 1000) {
             refresh(now);

@@ -36,11 +36,9 @@ public class Rid64Test {
     @Test
     public void TestGenerator() {
         Rid64Generator generator = new Rid64Generator(I128S512, 12, 12);
-        Rid64 tid64 = generator.next();
-
-
-
-
+        Rid64 rid = generator.born();
+        System.out.println(rid.toHexString());
+        System.out.println(rid.toString());
     }
 
 }

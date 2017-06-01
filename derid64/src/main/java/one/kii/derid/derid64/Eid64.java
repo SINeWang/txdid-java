@@ -55,9 +55,7 @@ public class Eid64 extends AbstractDerid64 {
         if (array != null) {
             return;
         }
-        array = Derid64Parser.oid2Array(id);
-
-        array = Derid64Parser.tid2Array(id);
+        array = Derid64Parser.eid2Array(id);
 
         StringBuffer buffer = new StringBuffer();
 
