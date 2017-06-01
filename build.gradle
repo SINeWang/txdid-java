@@ -1,0 +1,66 @@
+buildscript {
+  dependencies {
+    classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
+    classpath 'io.spring.gradle:propdeps-plugin:0.0.8'
+  }
+}
+
+plugins {
+  id 'pl.allegro.tech.build.axion-release' version '1.6.0'
+  id 'idea'
+}
+
+ext {
+
+}
+
+scmVersion {
+  tag {
+    prefix = 'v'
+  }
+}
+
+allprojects {
+  project.version = scmVersion.version
+  apply plugin: 'maven-publish-auth'
+
+  group 'one.kii.derid'
+}
+
+
+subprojects {
+
+  buildscript {
+    dependencies {
+      classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
+    }
+  }
+
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        from components.java
+      }
+    }
+  }
+
+  apply plugin: 'java'
+  apply plugin: 'maven'
+  apply plugin: 'propdeps'
+  apply plugin: 'propdeps-maven'
+  apply plugin: 'propdeps-idea'
+
+
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+
+  dependencies {
+
+    testCompile("junit:junit:4.12")
+  }
+
+  compileJava.dependsOn(processResources)
+
+
+}
