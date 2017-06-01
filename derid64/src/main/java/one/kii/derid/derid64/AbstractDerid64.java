@@ -42,14 +42,6 @@ public abstract class AbstractDerid64 {
 
     abstract void parse();
 
-    public long value() {
-        return id;
-    }
-
-    public String toHexString() {
-        return Long.toString(id);
-    }
-
     public String toString() {
         if (id != 0) {
             if (array == null) {
