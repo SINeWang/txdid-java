@@ -16,7 +16,7 @@ ext {
 
 scmVersion {
   tag {
-    prefix = 'derid'
+    prefix = 'txdid'
   }
 }
 
@@ -24,7 +24,7 @@ allprojects {
   project.version = scmVersion.version
   apply plugin: 'maven-publish-auth'
 
-  group 'one.kii.derid'
+  group 'one.kii.txdid'
 }
 
 
