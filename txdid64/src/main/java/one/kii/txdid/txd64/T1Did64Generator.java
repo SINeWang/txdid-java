@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package one.kii.derid.derid64;
+package one.kii.txdid.txd64;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by WangYanJiong on 8/2/16.
  */
-public class Eid64Generator extends Abstract64Generator {
+public class T1Did64Generator extends Abstract64Generator {
 
     static final int LEN_INS = 12;
 
@@ -43,13 +43,13 @@ public class Eid64Generator extends Abstract64Generator {
     private long instance;
 
     @Deprecated
-    public Eid64Generator() {
+    public T1Did64Generator() {
         this.timestamp = 0;
         this.instance = 0;
     }
 
 
-    public Eid64Generator(int instance) {
+    public T1Did64Generator(int instance) {
         if ((instance >> 12) > 0) {
             throw new IllegalArgumentException("illegal instance {" + instance + "}");
         }

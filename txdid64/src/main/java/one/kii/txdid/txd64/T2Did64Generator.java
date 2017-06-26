@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package one.kii.derid.derid64;
+package one.kii.txdid.txd64;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 
-public class Rid64Generator extends Abstract64Generator {
+public class T2Did64Generator extends Abstract64Generator {
 
     static final int LEN_SIS = LEN_TOTAL - LEN_DATE - LEN_TIME - LEN_R - LEN_TID_TYPE;
 
@@ -52,7 +52,7 @@ public class Rid64Generator extends Abstract64Generator {
     private AtomicInteger serial;
 
 
-    public Rid64Generator(Rid64.Tid64Type type, int system, int instance) {
+    public T2Did64Generator(T2Did64.Tid64Type type, int system, int instance) {
         this.timestamp = 0;
         this.type = type.ordinal();
         long lengthOfT = LEN_TYPE_SER[type.ordinal()];

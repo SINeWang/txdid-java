@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package one.kii.derid.derid64;
+package one.kii.txdid.txd64;
 
 import org.junit.Test;
 
@@ -29,13 +29,13 @@ import org.junit.Test;
  * Created by WangYanJiong on 7/26/16.
  */
 
-public class Eid64Test {
+public class T1Did64Test {
 
     @Test
     public void TestGenerator() {
-        Eid64Generator generator = new Eid64Generator(12);
+        T1Did64Generator generator = new T1Did64Generator(12);
         long id = generator.born();
-        System.out.println(new Eid64(id));
+        System.out.println(new T1Did64(id));
     }
 
 }

@@ -21,12 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package one.kii.derid.derid64;
+package one.kii.txdid.txd64;
 
 /**
  * Created by WangYanJiong on 8/2/16.
  */
-public class Derid64Parser {
+public class TxDid64Parser {
 
     private static String[] PADS = {
             "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
@@ -49,32 +49,32 @@ public class Derid64Parser {
         return Long.valueOf(id, 16);
     }
 
-    static short[] rid2Array(final long id) {
+    static short[] t2did2Array(final long id) {
         final short type = (short) ((0x7) & (id >> (Abstract64Generator.LEN_TOTAL - Abstract64Generator.LEN_R - Abstract64Generator.LEN_TID_TYPE)));
 
-        final int l_ser = Rid64Generator.LEN_TYPE_SER[type];
-        final int l_sisser = Rid64Generator.LEN_TYPE_INS[type] + l_ser;
+        final int l_ser = T2Did64Generator.LEN_TYPE_SER[type];
+        final int l_sisser = T2Did64Generator.LEN_TYPE_INS[type] + l_ser;
 
-        final long MASK_SYSTEM = (1 << Rid64Generator.LEN_TYPE_SYS[type]) - 1;
-        final long MASK_INSTANCE = (1 << Rid64Generator.LEN_TYPE_INS[type]) - 1;
-        final long MASK_SER = (1 << Rid64Generator.LEN_TYPE_SER[type]) - 1;
+        final long MASK_SYSTEM = (1 << T2Did64Generator.LEN_TYPE_SYS[type]) - 1;
+        final long MASK_INSTANCE = (1 << T2Did64Generator.LEN_TYPE_INS[type]) - 1;
+        final long MASK_SER = (1 << T2Did64Generator.LEN_TYPE_SER[type]) - 1;
 
         final short serial = (short) (id & MASK_SER);
         final short instance = (short) ((id >> l_ser) & MASK_INSTANCE);
         final short system = (short) ((id >> l_sisser) & MASK_SYSTEM);
 
-        final short second = (short) ((id >> Rid64Generator.LEN_SIS) & Abstract64Generator.MASK_SECOND);
-        final short minute = (short) ((id >> (Abstract64Generator.LEN_TIME_SS + Rid64Generator.LEN_SIS)) & Abstract64Generator.MASK_MINUTE);
-        final short hour = (short) ((id >> (Abstract64Generator.LEN_TIME_MM + Abstract64Generator.LEN_TIME_SS + Rid64Generator.LEN_SIS)) & Abstract64Generator.MASK_HOUR);
-        final short date = (short) ((id >> (Abstract64Generator.LEN_TIME + Rid64Generator.LEN_SIS)) & Abstract64Generator.MASK_DATE);
-        final short month = (short) ((id >> (Abstract64Generator.LEN_DATE_DD + Abstract64Generator.LEN_TIME + Rid64Generator.LEN_SIS)) & Abstract64Generator.MASK_MONTH);
-        final short year = (short) ((id >> (Abstract64Generator.LEN_DATE_MM + Abstract64Generator.LEN_DATE_DD + Abstract64Generator.LEN_TIME + Rid64Generator.LEN_SIS)) & Abstract64Generator.MASK_YEAR);
+        final short second = (short) ((id >> T2Did64Generator.LEN_SIS) & Abstract64Generator.MASK_SECOND);
+        final short minute = (short) ((id >> (Abstract64Generator.LEN_TIME_SS + T2Did64Generator.LEN_SIS)) & Abstract64Generator.MASK_MINUTE);
+        final short hour = (short) ((id >> (Abstract64Generator.LEN_TIME_MM + Abstract64Generator.LEN_TIME_SS + T2Did64Generator.LEN_SIS)) & Abstract64Generator.MASK_HOUR);
+        final short date = (short) ((id >> (Abstract64Generator.LEN_TIME + T2Did64Generator.LEN_SIS)) & Abstract64Generator.MASK_DATE);
+        final short month = (short) ((id >> (Abstract64Generator.LEN_DATE_DD + Abstract64Generator.LEN_TIME + T2Did64Generator.LEN_SIS)) & Abstract64Generator.MASK_MONTH);
+        final short year = (short) ((id >> (Abstract64Generator.LEN_DATE_MM + Abstract64Generator.LEN_DATE_DD + Abstract64Generator.LEN_TIME + T2Did64Generator.LEN_SIS)) & Abstract64Generator.MASK_YEAR);
         final short r = (short) ((0x1) & id >> (Abstract64Generator.LEN_TOTAL - Abstract64Generator.LEN_R));
 
         return new short[]{r, type, year, month, date, hour, minute, second, system, instance, serial};
     }
 
-    static short[] eid2Array(final long id) {
+    static short[] t1did2Array(final long id) {
         final int l_ser = 19;
         final int l_ins = 12;
         final int l_is = 31;

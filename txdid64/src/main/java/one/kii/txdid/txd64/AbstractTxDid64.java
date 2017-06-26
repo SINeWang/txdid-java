@@ -21,12 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package one.kii.derid.derid64;
+package one.kii.txdid.txd64;
 
 /**
  * Created by WangYanJiong on 8/3/16.
  */
-public abstract class AbstractDerid64 {
+public abstract class AbstractTxDid64 {
 
     static final String DELIMITER = "-";
 

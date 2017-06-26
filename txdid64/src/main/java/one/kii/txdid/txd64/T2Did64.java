@@ -21,12 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package one.kii.derid.derid64;
+package one.kii.txdid.txd64;
 
 /**
  * Created by WangYanJiong on 7/29/16.
  */
-public class Rid64 extends AbstractDerid64 {
+public class T2Did64 extends AbstractTxDid64 {
 
     private static final int FIELD_T = 1;
 
@@ -50,7 +50,7 @@ public class Rid64 extends AbstractDerid64 {
 
     private static final String PREFIX = "R";
 
-    Rid64(long id) {
+    T2Did64(long id) {
         this.id = id;
     }
 
@@ -58,7 +58,7 @@ public class Rid64 extends AbstractDerid64 {
         if (array != null) {
             return;
         }
-        array = Derid64Parser.rid2Array(id);
+        array = TxDid64Parser.t2did2Array(id);
 
         StringBuffer buffer = new StringBuffer();
 
@@ -66,12 +66,12 @@ public class Rid64 extends AbstractDerid64 {
         buffer.append(getType());
         buffer.append(DELIMITER);
         buffer.append(getYear());
-        buffer.append(Derid64Parser.padding(getMonth()));
-        buffer.append(Derid64Parser.padding(getDate()));
+        buffer.append(TxDid64Parser.padding(getMonth()));
+        buffer.append(TxDid64Parser.padding(getDate()));
         buffer.append(DOT);
-        buffer.append(Derid64Parser.padding(getHour()));
-        buffer.append(Derid64Parser.padding(getMinute()));
-        buffer.append(Derid64Parser.padding(getSecond()));
+        buffer.append(TxDid64Parser.padding(getHour()));
+        buffer.append(TxDid64Parser.padding(getMinute()));
+        buffer.append(TxDid64Parser.padding(getSecond()));
         buffer.append(DELIMITER);
         buffer.append(getSystem());
         buffer.append(DOT);
