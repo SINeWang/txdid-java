@@ -48,7 +48,7 @@ public class T2Did64 extends AbstractTxDid64 {
 
     private static final int FIELD_SER = 10;
 
-    private static final String PREFIX = "R";
+    private static final String PREFIX = "B";
 
     T2Did64(long id) {
         this.id = id;
