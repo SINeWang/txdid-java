@@ -1,6 +1,6 @@
 
 
-# Derid: A Distributed ID Generator for E&R
+# Derid: A Distributed ID Generator with Time and X-Dimension
 
 ## Source
 
@@ -14,13 +14,13 @@
 
 * 64bits fixed-length
 
-## Eid64Generator: 64bits Entity ID Generator
+## T1Did64Generator: 64bits Time + 1 Dimension ID Generator
 
 * supports up to 2048 (12bits) instances for a single cluster
 * supports up to 524288 (19bits) ids for a single instance per seconds
 
 
-## Rid64Generator: 64bits Relation ID Generator
+## T2Did64Generator: 64bits Relation + 2 Dimension ID Generator
 
 * 7 build-in typical generate strategy
 
@@ -35,4 +35,4 @@
 | 6     | 128   | 1024 |
 | 7     | 128   | 512  |
 
-[1]:	https://github.com/sinewang/derid-java
+[1]:	https://github.com/sinewang/txdid-java
