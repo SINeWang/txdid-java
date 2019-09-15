@@ -1,40 +1,53 @@
 buildscript {
-  dependencies {
-    classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
-    classpath 'io.spring.gradle:propdeps-plugin:0.0.8'
-  }
 }
 
 plugins {
-  id 'pl.allegro.tech.build.axion-release' version '1.6.0'
+  id 'pl.allegro.tech.build.axion-release' version '1.10.2' apply false
   id 'idea'
 }
 
 ext {
 
-}
+  ENV_MAVEN_PUBLIC_URL = System.getenv('MAVEN_PUBLIC_URL')
+  ENV_MAVEN_RELEASE_URL = System.getenv('MAVEN_RELEASE_URL')
+  ENV_MAVEN_SNAPSHOT_URL = System.getenv('MAVEN_SNAPSHOT_URL')
+  ENV_MAVEN_REPO_USERNAME = System.getenv('MAVEN_REPO_USERNAME')
+  ENV_MAVEN_REPO_PASSWORD = System.getenv('MAVEN_REPO_PASSWORD')
 
-scmVersion {
-  tag {
-    prefix = 'txdid'
-  }
 }
 
 allprojects {
-  project.version = scmVersion.version
-  apply plugin: 'maven-publish-auth'
 
-  group 'one.kii.txdid'
+  group = 'one.kii.derid'
+
+
+  repositories {
+    maven {
+      if ("${ENV_MAVEN_PUBLIC_URL}" != 'null') {
+        url "${ENV_MAVEN_PUBLIC_URL}"
+      } else {
+        url "${maven_public_url}"
+      }
+
+    }
+  }
 }
 
 
 subprojects {
 
-  buildscript {
-    dependencies {
-      classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
+  apply plugin: 'maven-publish'
+
+  apply plugin: 'java'
+  apply plugin: 'maven'
+  apply plugin: 'pl.allegro.tech.build.axion-release'
+
+  scmVersion {
+    tag {
+      prefix = project.name
     }
   }
+  project.version = scmVersion.version
 
   publishing {
     publications {
@@ -42,14 +55,48 @@ subprojects {
         from components.java
       }
     }
+    repositories {
+      maven {
+        if (project.version.endsWith('-SNAPSHOT')) {
+          credentials {
+            if ("${ENV_MAVEN_REPO_USERNAME}" != 'null') {
+              username "${ENV_MAVEN_REPO_USERNAME}"
+            } else {
+              username "$maven_username"
+            }
+            if ("${ENV_MAVEN_REPO_PASSWORD}" != 'null') {
+              password "${ENV_MAVEN_REPO_PASSWORD}"
+            } else {
+              password "$maven_password"
+            }
+          }
+          if ("${ENV_MAVEN_SNAPSHOT_URL}" != 'null') {
+            url "${ENV_MAVEN_SNAPSHOT_URL}"
+          } else {
+            url "${maven_snapshot_url}"
+          }
+        } else {
+          credentials {
+            if ("${ENV_MAVEN_REPO_USERNAME}" != 'null') {
+              username "${ENV_MAVEN_REPO_USERNAME}"
+            } else {
+              username "$maven_username"
+            }
+            if ("${ENV_MAVEN_REPO_PASSWORD}" != 'null') {
+              password "${ENV_MAVEN_REPO_PASSWORD}"
+            } else {
+              password "$maven_password"
+            }
+          }
+          if ("${ENV_MAVEN_RELEASE_URL}" != 'null') {
+            url "${ENV_MAVEN_RELEASE_URL}"
+          } else {
+            url "${maven_release_url}"
+          }
+        }
+      }
+    }
   }
-
-  apply plugin: 'java'
-  apply plugin: 'maven'
-  apply plugin: 'propdeps'
-  apply plugin: 'propdeps-maven'
-  apply plugin: 'propdeps-idea'
-
 
   sourceCompatibility = 1.8
   targetCompatibility = 1.8
